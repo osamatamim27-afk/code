@@ -22,9 +22,6 @@ void fft(vector<cx>& a){
     vector<int>rev(n);
     for(int i = 0; i < n; i++){
         rev[i] = (rev[i >> 1] | (i & 1) << L) >> 1;
-    }
-
-    for(int i = 0; i < n; i++){
         if(i < rev[i]){
             swap(a[i], a[rev[i]]);
         }
@@ -44,7 +41,7 @@ void fft(vector<cx>& a){
 }
 
 template<int M>
-vector<int> multiply(vector<int> a, vector<int> b){
+vector<int> multiply(const vector<int>& a, const vector<int>& b){
     if(a.empty() || b.empty())return {};
     int sz1 = a.size(), sz2 = b.size();
     vector<int>res(sz1 + sz2 - 1);
@@ -69,14 +66,15 @@ vector<int> multiply(vector<int> a, vector<int> b){
 
     fft(outl), fft(outs);
     for(int i = 0; i < sz1 + sz2 - 1; i++){
-        ll av = ll(real(outl[i]) + 0.5), cv = ll(imag(outs[i]) + 0.5);
-        ll bv = ll(imag(outl[i]) + 0.5) + ll(real(outs[i]) + 0.5);
+        ll av = ll(real(outl[i]) + .5), cv = ll(imag(outs[i]) + .5);
+        ll bv = ll(imag(outl[i]) + .5) + ll(real(outs[i]) + .5);
         res[i] = ((av % M * cut + bv) % M * cut + cv) % M;
     }
     return res;
 }
 
 int main(){
+    cin.tie(nullptr)->sync_with_stdio(false);
     int n, m;
     cin >> n >> m;
     
